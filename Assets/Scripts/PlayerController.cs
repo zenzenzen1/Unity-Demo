@@ -6,10 +6,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private TextMeshProUGUI Text;
-    private const string Hazard_Tag = "Hazards";
+    private TextMeshProUGUI text;
+    private const string defaultText = "30_NguyenXuanTruong_Slot2";
+    private const string Hazard_Tag = "Hazards", Exit_Tag = "Exit";
     [SerializeField] float runSpeed = 4f;
-    [SerializeField] float jumpSpeed = 5f;
+    [SerializeField] float jumpSpeed = 6.7f;
     [SerializeField] float climbSpeed = 5f;
     [SerializeField] Vector2 deathKick = new Vector2(10f, 10f);
     [SerializeField] GameObject bullet;
@@ -19,17 +20,20 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D myRigidbody;
     Animator myAnimator;
     CapsuleCollider2D myBodyCollider;
-    // BoxCollider2D myFeetCollider;
+    BoxCollider2D myFeetCollider;
     float gravityScaleAtStart;
 
     bool isAlive = true;
 
     void Start()
     {
+        // text = GetComponent<TextMeshProUGUI>();
+        text = GameObject.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+        text.text = defaultText;
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myBodyCollider = GetComponent<CapsuleCollider2D>();
-        // myFeetCollider = GetComponent<BoxCollider2D>();
+        myFeetCollider = GetComponent<BoxCollider2D>();
         gravityScaleAtStart = myRigidbody.gravityScale;
     }
 
@@ -64,6 +68,14 @@ public class PlayerMovement : MonoBehaviour
             // do stuff
             myRigidbody.velocity += new Vector2(0f, jumpSpeed);
         }
+    }
+    private void Jump()
+    {
+        if (!isAlive || !myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; }
+        
+        // Vector2 jumpVelocityToAdd = new Vector2(0f, jumpSpeed);
+        // myRigidbody.velocity += jumpVelocityToAdd;
+        myRigidbody.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
     }
 
     void Run()
@@ -105,14 +117,6 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void Jump()
-    {
-        if (!myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; }
-        
-        // Vector2 jumpVelocityToAdd = new Vector2(0f, jumpSpeed);
-        // myRigidbody.velocity += jumpVelocityToAdd;
-        myRigidbody.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
-    }
 
     void FlipSprite()
     {
@@ -157,6 +161,12 @@ public class PlayerMovement : MonoBehaviour
         if (collider2D.CompareTag(Hazard_Tag))
         {
             gameObject.SetActive(false);
+            text.text = "Game Over";
+        }
+        if (collider2D.CompareTag(Exit_Tag))
+        {
+            gameObject.SetActive(false);
+            text.text = "Finish!";
         }
     }
 }
