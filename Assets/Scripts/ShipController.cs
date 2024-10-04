@@ -10,21 +10,36 @@ public class ShipController : MonoBehaviour
     [SerializeField]
     private int score = 0;
     
+    public int life = 3;
+    
+    public int stars = 0;
+    
     void Start()
     {
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         // Debug.Log(scoreText.name);
-        scoreText.text = "Score: " + score;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        scoreText.text = "Life: " + life;
+        scoreText.text += "\nScore: " + score;
+        scoreText.text += "\nNumber of Stars: " + stars;
+        scoreText.text += "\n" + Setting.defaultDisplayName;
+        // if(life <= 0){
+        //     Destroy(gameObject);
+        //     FindObjectOfType<ShipCollision>().GetComponent<ShipCollision>().ChangeToGameOverScene();
+        // }
     }
     
-    public void UpdateScore(){
-        score += 1;
-        scoreText.text = "Score: " + score;
+    public void UpdateScore(int score){
+        this.score += score;
+        // scoreText.text = "Score: " + this.score + "\n" + Setting.defaultDisplayName;
+    }
+    
+    public int GetScore(){
+        return score;
     }
 }

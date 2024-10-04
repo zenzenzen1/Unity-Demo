@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Asteroid
   - Star
+  - GameOverScoreText
   layers:
   - Default
   - TransparentFX

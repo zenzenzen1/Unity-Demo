@@ -10,15 +10,18 @@ public class StarSpawner : MonoBehaviour
     [SerializeField]
     private float speed = 3f;
     
+    [SerializeField] float timer = 0f;
+    
     // private Vector2 pos;
     
     [Header("Asteroid")]
     [SerializeField] GameObject[] stars;
+    
+    [SerializeField] float spawnTime = 4f;
 
     void Start()
     {
         SetMinAndMax();
-        SpawnObjects();
     }
 
     private void SetMinAndMax()
@@ -34,12 +37,20 @@ public class StarSpawner : MonoBehaviour
 
     private void SpawnObjects()
     {
+        timer += Time.deltaTime;
+        if(timer >= spawnTime){
+            Spawn();
+            timer = 0;
+        }
+    }
+    
+    private void Spawn(){
         int NumberOfObj = Random.Range(0, stars.Length);
         var position = new Vector2(Random.Range(MinX, MaxX), MaxY);
         GameObject obj = Instantiate(stars[NumberOfObj], position, Quaternion.identity);
         obj.transform.parent = transform;
     }
-
+    
     // Update is called once per frame
     void Update()
     {

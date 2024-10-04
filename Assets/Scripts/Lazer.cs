@@ -11,6 +11,7 @@ public class Lazer : MonoBehaviour
     void Start()
     {
         // shipController = GetComponent<ShipController>();
+        lineRenderer.enabled = false;
     }
 
     // Update is called once per frame
@@ -43,9 +44,20 @@ public class Lazer : MonoBehaviour
     }
     
     void OnTriggerEnter2D(Collider2D other){
+        HandleTrigger(other);
+    }
+    
+    void OnTriggerStay2D(Collider2D other) {
+        HandleTrigger(other);
+    }
+    
+    void HandleTrigger(Collider2D other){
+        if(!lineRenderer.enabled){
+            return;
+        }
         if(other.gameObject.CompareTag("Asteroid"))
         {
-            shipController.UpdateScore();
+            shipController.UpdateScore(Setting.asteroidScore);
             Destroy(other.gameObject);
         }
     }
