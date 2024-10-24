@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
     }
     public void ExitGame()
     {
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         UnityEngine.Debug.Log("Quit success");
     }
 }

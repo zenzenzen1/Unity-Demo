@@ -10,8 +10,8 @@ public class PlayerControl : MonoBehaviour
     private GameObject scoreTextGO;
     public float torque = 4;
     public float jumpForce = 10f;
-    public float speedMultiplier = 1.05f;
-    public float slowMultiplier = 0.95f;
+    public float speedMultiplier = 2f;
+    public float slowMultiplier = 0.15f;
     private bool isGrounded = false;
     public GameObject GameManagerGO;
     // Start is called before the first frame update
@@ -25,23 +25,23 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
             // Rotate object to the left
             rb.AddTorque(torque);
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             // Rotate object to the right
             rb.AddTorque(-torque);
 
         }
-        if (Input.GetKey(KeyCode.UpArrow) && isGrounded)
+        if (Input.GetKey(KeyCode.W) && isGrounded)
         {
             rb.velocity *= speedMultiplier;
         }
         // Slow down
-        if (Input.GetKey(KeyCode.DownArrow) && isGrounded)
+        if (Input.GetKey(KeyCode.S) && isGrounded)
         {
             rb.velocity *= slowMultiplier;
         }
